@@ -1,6 +1,7 @@
 ﻿"use client"
 
 import Link from "next/link"
+import { Suspense } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import {
@@ -156,7 +157,7 @@ const normalizeCategory = (category: string | null) => {
   return categoryAliases[category] ?? "All"
 }
 
-export default function ProjectsPage() {
+function ProjectsContent() {
   const searchParams = useSearchParams()
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[0] | null>(null)
   const [activeCategory, setActiveCategory] = useState<string>(
@@ -321,8 +322,8 @@ export default function ProjectsPage() {
               )}
             </DialogContent>
           </Dialog>
-        </div>
-      </section>
+</div>
+       </section>
 
       <section className="py-24 bg-[#1C1C1C]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -335,5 +336,21 @@ export default function ProjectsPage() {
         </div>
       </section>
     </>
+  )
+}
+
+export default function ProjectsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProjectsContent />
+    </Suspense>
+  )
+}
+
+export default function ProjectsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProjectsContent />
+    </Suspense>
   )
 }
