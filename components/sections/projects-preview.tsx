@@ -1,0 +1,254 @@
+﻿"use client"
+
+import { motion } from "framer-motion"
+import { useState } from "react"
+import Image from "next/image"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Calendar, MapPin, Eye, X } from "lucide-react"
+
+const projects = [
+  {
+    id: 1,
+    title: "Kianda Road Upgrading to Bitumen Standards",
+    category: "Infrastructure",
+    status: "Completed",
+    location: "Nyeri, Kenya",
+    image: "/images/project-kianda-road.jpg",
+    description:
+      "Road upgrading project to improve transportation infrastructure in Kianda area.",
+    details:
+      "This project involved upgrading existing earth roads to bitumen standards with proper drainage systems and culvert installation for improved accessibility.",
+    challenge:
+      "Limited access due to poor road conditions affecting local transportation.",
+    solution:
+      "Complete road upgrading to bitumen standards with proper drainage infrastructure.",
+    scope:
+      "Road construction, drainage systems, culvert installation, pavement marking",
+    completed: "2023",
+  },
+  {
+    id: 2,
+    title: "Nyeri Town Roads Upgrading",
+    category: "Road Works",
+    status: "Completed",
+    location: "Nyeri, Kenya",
+    image: "/images/project-nyeri-roads.jpg",
+    description:
+      "Upgrading urban roads in Nyeri Town to bitumen standards.",
+    details:
+      "Comprehensive urban road upgrading covering multiple streets in Nyeri Town with modern materials and efficient drainage.",
+    challenge:
+      "Aging road infrastructure requiring systematic modernization across the town.",
+    solution:
+      "Phased road upgrading with modern materials and improved drainage systems.",
+    scope:
+      "Urban road upgrading, drainage works, pavement construction, street lighting",
+    completed: "2022",
+  },
+  {
+    id: 3,
+    title: "Asian Quarters Transport Termini Civil Works",
+    category: "Infrastructure",
+    status: "Completed",
+    location: "Nyeri, Kenya",
+    image: "/images/project-asian-quarters.jpg",
+    description:
+      "Civil works for transport termini in Asian Quarters area.",
+    details:
+      "Major infrastructure project involving civil works for transport terminal facilities including approach roads and drainage systems.",
+    challenge:
+      "Complex civil engineering requirements for high-traffic transport facilities.",
+    solution:
+      "Comprehensive civil works design with efficient space utilization and drainage.",
+    scope: "Civil works, approach roads, drainage systems, pavement works",
+    completed: "2023",
+  },
+  {
+    id: 4,
+    title: "Residential Apartments Ruiru",
+    category: "Residential",
+    status: "Completed",
+    location: "Ruiru, Kenya",
+    image: "/images/project-residential-ruiru.jpg",
+    description:
+      "Multi-unit residential apartment development.",
+    details:
+      "Quality residential apartment construction project featuring modern design and durable construction methods.",
+    challenge:
+      "Creating affordable quality residential accommodation with efficient space planning.",
+    solution:
+      "Optimized construction methods maintaining quality while controlling costs.",
+    scope:
+      "Residential construction, structural works, finishing, utilities installation",
+    completed: "2022",
+  },
+  {
+    id: 5,
+    title: "Residential & Commercial Construction Works",
+    category: "Commercial",
+    status: "Completed",
+    location: "Nyeri, Kenya",
+    image: "/images/project-residential-commercial.jpg",
+    description:
+      "Mixed-use residential and commercial building development.",
+    details:
+      "Integrated development combining residential units with commercial spaces designed for functionality and aesthetic appeal.",
+    challenge:
+      "Balancing residential and commercial requirements in shared building design.",
+    solution:
+      "Specialized design approach for mixed-use development with separate access control.",
+    scope: "Mixed-use construction, structural engineering, MEP services",
+    completed: "2021",
+  },
+]
+
+export default function ProjectsPreview() {
+  const [selectedProject, setSelectedProject] = useState<
+    (typeof projects)[0] | null
+  >(null)
+
+  return (
+    <section className="py-24 lg:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16 lg:mb-20"
+        >
+          <span className="section-eyebrow mb-4">Portfolio</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 font-heading">
+            Featured Projects
+          </h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="group"
+            >
+              <div className="premium-card relative overflow-hidden h-full flex flex-col">
+                <div className="relative aspect-video overflow-hidden">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/80 via-[#1C1C1C]/25 to-transparent opacity-90" />
+                  <span className="premium-badge absolute top-4 left-4 px-3 py-1.5 text-xs font-semibold">
+                    {project.category}
+                  </span>
+                  <button
+                    onClick={() => setSelectedProject(project)}
+                    className="absolute bottom-4 right-4 w-11 h-11 rounded-full btn-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    aria-label={`View ${project.title}`}
+                  >
+                    <Eye className="w-5 h-5 text-white" />
+                  </button>
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <h3 className="min-w-0 break-words text-lg font-bold text-slate-900 mb-3 group-hover:text-[#D4A017] transition-colors font-heading tracking-tight">
+                    {project.title}
+                  </h3>
+                  <p className="min-w-0 break-words text-slate-600 text-sm mb-4 line-clamp-2 leading-relaxed flex-1">
+                    {project.description}
+                  </p>
+                  <div className="flex items-center justify-between text-xs text-slate-500 pt-4 border-t border-slate-100">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="w-4 h-4 text-[#D4A017]" />
+                      <span>{project.location}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4 text-[#D4A017]" />
+                      <span>{project.completed}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
+          <DialogContent className="premium-card max-h-[90vh] max-w-4xl overflow-y-auto" showCloseButton={false}>
+            {selectedProject && (
+              <>
+                <DialogHeader>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <DialogTitle className="text-2xl font-bold text-slate-900 font-heading pr-4">
+                        {selectedProject.title}
+                      </DialogTitle>
+                      <DialogDescription className="text-base text-[#1C1C1C] mt-2">
+                        {selectedProject.category} Project •{" "}
+                        {selectedProject.completed}
+                      </DialogDescription>
+                    </div>
+                    <DialogClose asChild>
+                      <Button variant="ghost" size="icon">
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </DialogClose>
+                  </div>
+                </DialogHeader>
+                <div className="mt-6">
+                  <div className="relative aspect-video rounded-xl overflow-hidden mb-6">
+                    <Image
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      fill
+                      className="object-cover"
+                      sizes="100vw"
+                    />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <h4 className="font-bold text-slate-900 mb-2">
+                        Challenge
+                      </h4>
+                      <p className="text-slate-600 text-sm">
+                        {selectedProject.challenge}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-900 mb-2">
+                        Solution
+                      </h4>
+                      <p className="text-slate-600 text-sm">
+                        {selectedProject.solution}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-slate-600 mb-6 leading-relaxed">
+                    {selectedProject.details}
+                  </p>
+                  <div className="p-4 bg-slate-50 rounded-lg">
+                    <span className="text-slate-500 text-sm">Scope:</span>
+                    <span className="text-slate-900 font-medium ml-2">
+                      {selectedProject.scope}
+                    </span>
+                  </div>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
+    </section>
+  )
+}
