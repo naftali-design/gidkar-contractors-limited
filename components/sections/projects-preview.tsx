@@ -110,10 +110,25 @@ const projects = [
   },
 ]
 
-export default function ProjectsPreview() {
+export default function ProjectsPreview({
+  initialCategory,
+}: {
+  initialCategory?: string
+}) {
   const [selectedProject, setSelectedProject] = useState<
     (typeof projects)[0] | null
   >(null)
+  const categoryFilter = initialCategory?.toLowerCase()
+  const filteredProjects = categoryFilter
+    ? projects.filter((project) => {
+        const projectCategory = project.category.toLowerCase()
+
+        return (
+          projectCategory === categoryFilter ||
+          (categoryFilter === "roads" && projectCategory === "road works")
+        )
+      })
+    : projects
 
   return (
     <section className="py-24 lg:py-32 bg-white">
@@ -130,59 +145,70 @@ export default function ProjectsPreview() {
             Featured Projects
           </h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group"
-            >
-              <div className="premium-card relative overflow-hidden h-full flex flex-col">
-                <div className="relative aspect-video overflow-hidden">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/80 via-[#1C1C1C]/25 to-transparent opacity-90" />
-                  <span className="premium-badge absolute top-4 left-4 px-3 py-1.5 text-xs font-semibold">
-                    {project.category}
-                  </span>
-                  <button
-                    onClick={() => setSelectedProject(project)}
-                    className="absolute bottom-4 right-4 w-11 h-11 rounded-full btn-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                    aria-label={`View ${project.title}`}
-                  >
-                    <Eye className="w-5 h-5 text-white" />
-                  </button>
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="min-w-0 break-words text-lg font-bold text-slate-900 mb-3 group-hover:text-[#D4A017] transition-colors font-heading tracking-tight">
-                    {project.title}
-                  </h3>
-                  <p className="min-w-0 break-words text-slate-600 text-sm mb-4 line-clamp-2 leading-relaxed flex-1">
-                    {project.description}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-slate-500 pt-4 border-t border-slate-100">
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4 text-[#D4A017]" />
-                      <span>{project.location}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="w-4 h-4 text-[#D4A017]" />
-                      <span>{project.completed}</span>
+        {filteredProjects.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="group"
+              >
+                <div className="premium-card relative overflow-hidden h-full flex flex-col">
+                  <div className="relative aspect-video overflow-hidden">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/80 via-[#1C1C1C]/25 to-transparent opacity-90" />
+                    <span className="premium-badge absolute top-4 left-4 px-3 py-1.5 text-xs font-semibold">
+                      {project.category}
+                    </span>
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="absolute bottom-4 right-4 w-11 h-11 rounded-full btn-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label={`View ${project.title}`}
+                    >
+                      <Eye className="w-5 h-5 text-white" />
+                    </button>
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="min-w-0 break-words text-lg font-bold text-slate-900 mb-3 group-hover:text-[#D4A017] transition-colors font-heading tracking-tight">
+                      {project.title}
+                    </h3>
+                    <p className="min-w-0 break-words text-slate-600 text-sm mb-4 line-clamp-2 leading-relaxed flex-1">
+                      {project.description}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-slate-500 pt-4 border-t border-slate-100">
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="w-4 h-4 text-[#D4A017]" />
+                        <span>{project.location}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="w-4 h-4 text-[#D4A017]" />
+                        <span>{project.completed}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="premium-card p-8 text-center">
+            <h3 className="text-xl font-bold text-slate-900 mb-2 font-heading">
+              No projects found
+            </h3>
+            <p className="text-slate-600">
+              We do not have featured projects for this category yet.
+            </p>
+          </div>
+        )}
 
         <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
           <DialogContent className="premium-card max-h-[90vh] max-w-4xl overflow-y-auto" showCloseButton={false}>

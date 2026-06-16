@@ -2,14 +2,14 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import ProjectsPreview from "@/components/sections/projects-preview";
 
 function ProjectsContent() {
   const searchParams = useSearchParams();
+  const category = searchParams.get("category");
 
   return (
-    <div>
-      <h1>Projects Page</h1>
-    </div>
+    <ProjectsPreview initialCategory={category ?? undefined} />
   );
 }
 
